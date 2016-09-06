@@ -23,7 +23,17 @@
 
 var treeData = {};
 var matchedNodes = [];
-var lastQuery = '';
+var lastQuery = ''; // last query in `findNodes` to evade same requests
+var currentSelector = {
+	query: '',
+	index: 0
+};
+function updateCurrentSelector(query, index) {
+	currentSelector.query = query;
+	currentSelector.index = index;
+}
+// [{propertyName: prop, element: propElement}]
+var currentProperties = [];
 /*
 	name <String>
 		Default type: 'MouseArea(0x12345678)'
@@ -60,8 +70,15 @@ ws.onmessage = function(event) {
 				updateProperties(data.result);
 			}
 			break;
+		case 'getProperty':
+			if (data.result) {
+				updateProperty(data.result.key, data.result.value);
+			}
+			break;
+		case 'setProperty':
+			break;
 		default:
-			console.warn('There is no handler for ', data.method)
+			console.warn('There is no handler for', data.method)
 			return;
 	}
 };
@@ -97,6 +114,14 @@ function getProperty(selector, index, name) {
 	};
 	ws.send(JSON.stringify(request));
 }
+function setProperty(selector, index, name, value) {
+	var request = {
+		jsonrpc: '2.0',
+		method: 'setProperty',
+		params: [selector, index, name, value]
+	};
+	ws.send(JSON.stringify(request));
+}
 
 
 // Command Line
@@ -112,16 +137,14 @@ function handleInput(event) {
 	if (queryParts.length === 1) {
 		var q = queryParts[0];
 		var r = selectorRegexp.exec(q);
-		var i = r[3];
+		var i = r[3] || 0;
 		q = r[1];
 
 		var result = findNodes(q.toLowerCase());
-		if (result) {
-			if (result.nodes.length === 1) {
-				listProperties(getSelector(result.nodes[0], result.searchType), 0);
-			} else if (result.nodes.length > 1 && i != null) {
-				listProperties(getSelector(result.nodes[i], result.searchType), i);
-			}
+		if (result && result.nodes.length) {
+			var selector = getSelector(result.nodes[i], result.searchType);
+			updateCurrentSelector(selector, i);
+			listProperties(selector, i);
 		}
 	}
 }
@@ -308,6 +331,8 @@ function updateResults(nodes) {
 	resultsCountElement.innerText = nodes.length;
 }
 function updateProperties(properties) {
+	currentProperties = [];
+
 	var fragment = document.createDocumentFragment();
 	var filteredProperties = properties.filter(function(prop) {
 		return !prop.endsWith('Changed');
@@ -315,13 +340,43 @@ function updateProperties(properties) {
 	filteredProperties.forEach(function(prop) {
 		var propElement = document.createElement('div');
 		addClass(propElement, 'property');
-		propElement.innerText = prop;
+
+		var propKey = document.createElement('span');
+		addClass(propKey, 'property__key');
+		propKey.innerText = prop;
+		propKey.addEventListener('click', function(event) {
+			getProperty(currentSelector.query, currentSelector.index, prop);
+		});
+
+		var propValue = document.createElement('span');
+		addClass(propValue, 'property__value');
+		propValue.setAttribute('contenteditable', 'true');
+		propValue.addEventListener('keydown', function(event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
+			}
+		});
+		propValue.addEventListener('blur', function(event) {
+			setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
+		});
+
+		propElement.appendChild(propKey);
+		propElement.appendChild(propValue);
+
 		fragment.appendChild(propElement);
+
+		currentProperties.push({propertyName: prop, element: propElement});
 	});
 	propertiesElement.innerHTML = '';
 	propertiesElement.appendChild(fragment);
 
 	propertiesCountElement.innerText = properties.length;
+}
+function updateProperty(key, value) {
+	currentProperties.find(function(prop) {
+		return prop.propertyName === key;
+	}).element.children[1].innerText = value;
 }
 function addClass(element, className) {
 	var classes = element.className.split(' ');
