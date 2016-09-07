@@ -56,7 +56,7 @@ function getNodeData(name) {
 
 
 // WebSocket
-var ws = new WebSocket('ws://localhost:12345');
+var ws = new WebSocket('wss://localhost:12345');
 ws.onmessage = function(event) {
 	var data = JSON.parse(event.data);
 	console.log(data);
