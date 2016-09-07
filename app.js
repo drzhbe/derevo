@@ -428,3 +428,6 @@ function unmatchElements(nodes) {
 
 // Program
 // createNode(treeElement, treeData);
+console.info('Greetings, my dear v4android developer!');
+console.info('Make sure to run: adb forward tcp:12345 tcp:12345');
+console.info('Make sure to add v4option: -G');
