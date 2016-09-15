@@ -23,7 +23,19 @@
 
 var treeData = {};
 var matchedNodes = [];
-var lastQuery = ''; // last query in `findNodes` to evade same requests
+var currentResultIndex = 0;
+
+// lastSelector used to evade same finding work. It is not a valid selector to make a request.
+var lastSelector = {
+	query: '',
+	index: 0
+};
+function updateLastSelector(query, index) {
+	lastSelector.query = query;
+	lastSelector.index = index;
+}
+
+// currentSelector used to make requests. It is a valid selector.
 var currentSelector = {
 	query: '',
 	index: 0
@@ -32,8 +44,10 @@ function updateCurrentSelector(query, index) {
 	currentSelector.query = query;
 	currentSelector.index = index;
 }
+
 // [{propertyName: prop, element: propElement}]
 var currentProperties = [];
+
 /*
 	name <String>
 		Default type: 'MouseArea(0x12345678)'
@@ -72,7 +86,7 @@ ws.onmessage = function(event) {
 			break;
 		case 'getProperty':
 			if (data.result) {
-				updateProperty(data.result.key, data.result.value);
+				updateProperty(data.result.key, JSON.stringify(data.result.value));
 			}
 			break;
 		case 'setProperty':
@@ -122,17 +136,51 @@ function setProperty(selector, index, name, value) {
 	};
 	ws.send(JSON.stringify(request));
 }
+function addBorderToElement(selector, index) {
+	var request = {
+		jsonrpc: '2.0',
+		method: 'addBorderToElement',
+		params: [selector, index]
+	};
+	ws.send(JSON.stringify(request));
+}
 
 
 // Command Line
 var input = document.querySelectorAll('.input')[0];
 input.addEventListener('keyup', handleInput);
 input.addEventListener('change', handleInput);
+input.addEventListener('keydown', function(event) {
+	if (event.keyCode === 38) {
+		event.preventDefault();
+		return handleUpDownArrows(true);
+	} else if (event.keyCode === 40) {
+		event.preventDefault();
+		return handleUpDownArrows(false);
+	}
+});
 // example: "DirectoryPage[2]"
 var selectorRegexp = /([^\[\]]+)(\[([0-9]+)\])?/;
 function handleInput(event) {
+	// up and down arrows are handled in keyDown
+	if (event.keyCode === 38 || event.keyCode === 40) {
+		return;
+	}
+
 	var query = event.target.value;
-	if (!query) return;
+	// Protect from repeatedly emitting input.changed with empty input.value
+	if (query === lastSelector.query && 0 === lastSelector.index) {
+		return;
+	}
+	if (!query) {
+		updateLastSelector('', 0);
+		unmatchElements(matchedNodes);
+		matchedNodes = [];
+		updateResults(matchedNodes);
+		updateProperties([]);
+		return;
+	}
+
 	var queryParts = query.split('.');
 	if (queryParts.length === 1) {
 		var q = queryParts[0];
@@ -140,71 +188,81 @@ function handleInput(event) {
 		var i = r[3] || 0;
 		q = r[1];
 
-		var result = findNodes(q.toLowerCase());
-		if (result && result.nodes.length) {
-			var selector = getSelector(result.nodes[i], result.searchType);
-			updateCurrentSelector(selector, i);
-			listProperties(selector, i);
-		}
-	}
-}
-function getSelector(node, searchType) {
-	return searchType === 'objectName'
-		? '#' + node.objectName
-		: node.type;
-}
-
-
-function findNodes(query) {
-	if (query === lastQuery
-		|| (query.startsWith('#') && query.length === 1)) {
-
-		return;
-	}
-
-	var byObjectName = query.startsWith('#');
-	var result = {
-		searchType: byObjectName
+		var searchType = q.startsWith('#')
 			? 'objectName'
-			: 'type',
-		nodes: byObjectName
-			? findByObjectName(treeData, query.substr(1))
-			: findByType(treeData, query)
-	};
-	if (!result.nodes.length) {
-		unmatchElements(matchedNodes);
-	}
-	matchedNodes = query ? result.nodes : [];
-	updateResults(matchedNodes);
-	lastQuery = query;
-	return result;
-}
-function findByType(node, query, results) {
-	results = results || [];
-	if (node.type.toLowerCase().startsWith(query)) {
-		results.push(node);
-		matchType(node.element, node.type, query);
-	} else if (matchedNodes.indexOf(node) !== -1) {
-		unmatchType(node.element, node.type);
-	}
-	if (node.children) {
-		node.children.forEach(function(child) {
-			findByType(child, query, results);
+			: 'type';
+
+		// query could be #ObjectName or Type, so cut the # and lowerCase it
+		if (searchType === 'objectName') {
+			q = q.substr(1);
+		}
+		q = q.toLowerCase();
+
+		if (q === lastSelector.query && i === lastSelector.index) {
+			return;
+		}
+		updateLastSelector(q, i);
+		var nodes = q
+			? findBy(treeData, searchType, q)
+			: [];
+
+		if (!nodes.length) {
+			unmatchElements(matchedNodes);
+			matchedNodes = nodes;
+			return;
+		}
+
+		matchedNodes = nodes;
+		updateResults(matchedNodes);
+
+		var selectedNode = matchedNodes[i];
+		var selector = getSelector(selectedNode, searchType);
+		updateCurrentSelector(selector, i);
+
+		addBorderToElement(selector, i);
+		listProperties(selector, i);
+
+		matchedNodes.forEach(function(node) {
+			match(node.element, searchType, node[searchType], query);
 		});
+		match(selectedNode.element, searchType, selectedNode[searchType], query, true);
+
+		selectedNode.element.scrollIntoView();
 	}
-	return results;
 }
-function findByObjectName(node, query, results) {
+function handleUpDownArrows(up) {
+	if (matchedNodes.length > 1) {
+		var newResultIndex = up
+			? currentResultIndex - 1 < 0
+				? matchedNodes.length - 1
+				: currentResultIndex - 1
+			: currentResultIndex + 1 > matchedNodes.length - 1
+				? 0
+				: currentResultIndex + 1;
+		updateResultSelected(resultsElement.children, currentResultIndex, newResultIndex);
+		currentResultIndex = newResultIndex;
+	}
+}
+function getSelector(node, searchType, index) {
+	var selectorIndex = index === undefined
+		? ''
+		: '[' + index + ']'
+	return searchType === 'objectName'
+		? '#' + node.objectName + selectorIndex
+		: node.type + selectorIndex;
+}
+
+function findBy(node, searchType, query, results) {
 	results = results || [];
-	if (node.objectName.toLowerCase().startsWith(query)) {
+	if (node[searchType].toLowerCase().startsWith(query)) {
 		results.push(node);
-		matchObjectName(node.element, node.objectName, query);
+		match(node.element, searchType, node[searchType], query);
 	} else if (matchedNodes.indexOf(node) !== -1) {
-		unmatchObjectName(node.element, node.objectName);
+		unmatch(node.element, searchType, node[searchType]);
 	}
 	if (node.children) {
 		node.children.forEach(function(child) {
-			findByObjectName(child, query, results);
+			findBy(child, searchType, query, results);
 		});
 	}
 	return results;
@@ -216,40 +274,21 @@ function updateTree(elements) {
 	createNode(treeElement, treeData);
 }
 function checkResults(visualType, nodeData) {
-	var selector = '';
 	var result = [];
+	var searchType = nodeData.objectName ? 'objectName' : 'type';
 
-	if (visualType === 'result') {
-		if (nodeData.objectName) {
-			if (matchedNodes.length) {
-				var result = matchedNodes.filter(function(matchedNode) {
-					return matchedNode.objectName === nodeData.objectName;
-				});
-				if (result.length === 1) {
-					selector = '#' + nodeData.objectName;
-				} else {
-					selector = '#' + nodeData.objectName + '[' + result.indexOf(nodeData) + ']';
-				}
-			}
-		} else {
-			if (matchedNodes.length) {
-				var result = matchedNodes.filter(function(matchedNode) {
-					return matchedNode.type === nodeData.type;
-				});
-				if (result.length === 1) {
-					selector = nodeData.type;
-				} else {
-					selector = nodeData.type + '[' + result.indexOf(nodeData) + ']';
-				}
-			}
-		}
-	} else if (visualType === 'tree-node') {
-		selector = nodeData.objectName
-			? '#' + nodeData.objectName
-			: nodeData.type;
+	if (visualType === 'result' && matchedNodes.length) {
+		result = matchedNodes.filter(function(matchedNode) {
+			return matchedNode[searchType] === nodeData[searchType];
+		});
 	}
 
-	input.value = selector;
+	input.value = getSelector(
+		nodeData,
+		searchType,
+		result.length > 1
+			? result.indexOf(nodeData)
+			: undefined);
 	input.dispatchEvent(new Event('change'));
 
 	return result;
@@ -279,7 +318,7 @@ function createNode(parent, node, deepness) {
 
 	if (node.children) {
 		node.children.forEach(function(child) {
-			createNode(fragment, child, deepness + 4);
+			createNode(fragment, child, deepness + 1);
 		});
 	}
 
@@ -321,55 +360,63 @@ function createNodeElement(nodeData, visualType, deepness) {
 	return node;
 }
 function updateResults(nodes) {
-	var fragment = document.createDocumentFragment();
-	nodes.forEach(function(node) {
-		fragment.appendChild(createNodeElement(node, 'result', 0));
-	});
-	resultsElement.innerHTML = '';
-	resultsElement.appendChild(fragment);
+	if (!nodes.length) {
+		resultsElement.innerHTML = '';
+	} else {
+		var fragment = document.createDocumentFragment();
+		nodes.forEach(function(node) {
+			fragment.appendChild(createNodeElement(node, 'result', 0));
+		});
+		resultsElement.innerHTML = '';
+		resultsElement.appendChild(fragment);
+	}
 
 	resultsCountElement.innerText = nodes.length;
 }
 function updateProperties(properties) {
 	currentProperties = [];
 
-	var fragment = document.createDocumentFragment();
-	var filteredProperties = properties.filter(function(prop) {
-		return !prop.endsWith('Changed');
-	});
-	filteredProperties.forEach(function(prop) {
-		var propElement = document.createElement('div');
-		addClass(propElement, 'property');
-
-		var propKey = document.createElement('span');
-		addClass(propKey, 'property__key');
-		propKey.innerText = prop;
-		propKey.addEventListener('click', function(event) {
-			getProperty(currentSelector.query, currentSelector.index, prop);
+	if (!properties.length) {
+		propertiesElement.innerHTML = '';
+	} else {
+		var fragment = document.createDocumentFragment();
+		var filteredProperties = properties.filter(function(prop) {
+			return !prop.endsWith('Changed');
 		});
+		filteredProperties.forEach(function(prop) {
+			var propElement = document.createElement('div');
+			addClass(propElement, 'property');
 
-		var propValue = document.createElement('span');
-		addClass(propValue, 'property__value');
-		propValue.setAttribute('contenteditable', 'true');
-		propValue.addEventListener('keydown', function(event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
+			var propKey = document.createElement('span');
+			addClass(propKey, 'property__key');
+			propKey.innerText = prop;
+			propKey.addEventListener('click', function(event) {
+				getProperty(currentSelector.query, currentSelector.index, prop);
+			});
+
+			var propValue = document.createElement('span');
+			addClass(propValue, 'property__value');
+			propValue.setAttribute('contenteditable', 'true');
+			propValue.addEventListener('keydown', function(event) {
+				if (event.keyCode === 13) {
+					event.preventDefault();
+					setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
+				}
+			});
+			propValue.addEventListener('blur', function(event) {
 				setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
-			}
+			});
+
+			propElement.appendChild(propKey);
+			propElement.appendChild(propValue);
+
+			fragment.appendChild(propElement);
+
+			currentProperties.push({propertyName: prop, element: propElement});
 		});
-		propValue.addEventListener('blur', function(event) {
-			setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
-		});
-
-		propElement.appendChild(propKey);
-		propElement.appendChild(propValue);
-
-		fragment.appendChild(propElement);
-
-		currentProperties.push({propertyName: prop, element: propElement});
-	});
-	propertiesElement.innerHTML = '';
-	propertiesElement.appendChild(fragment);
+		propertiesElement.innerHTML = '';
+		propertiesElement.appendChild(fragment);
+	}
 
 	propertiesCountElement.innerText = properties.length;
 }
@@ -398,23 +445,20 @@ function removeClass(element, className) {
 				<span .space>
 				<span .type>
 				[<span .objectName>]
+	searchType <String> 'type'|'objectName'
 	string <String>
 	query <String>
+	select <Bool>
 */
-function matchType(element, string, query) {
-	var typeElement = element.children[1];
-	typeElement.innerHTML = '<span class="match">' + string.substr(0, query.length) + '</span>' + string.substr(query.length);
+function match(element, searchType, string, query, select) {
+	var matchClass = select ? 'selected' : 'match';
+	var childIndex = searchType === 'type' ? 1 : 2;
+	var typeElement = element.children[childIndex];
+	typeElement.innerHTML = '<span class="' + matchClass + '">' + string.substr(0, query.length) + '</span>' + string.substr(query.length);
 }
-function unmatchType(element, string) {
-	var typeElement = element.children[1];
-	typeElement.innerHTML = string;
-}
-function matchObjectName(element, string, query) {
-	var typeElement = element.children[2];
-	typeElement.innerHTML = '<span class="match">' + string.substr(0, query.length) + '</span>' + string.substr(query.length);
-}
-function unmatchObjectName(element, string) {
-	var typeElement = element.children[2];
+function unmatch(element, searchType, string) {
+	var childIndex = searchType === 'type' ? 1 : 2;
+	var typeElement = element.children[childIndex];
 	typeElement.innerHTML = string;
 }
 function unmatchElements(nodes) {
@@ -424,6 +468,11 @@ function unmatchElements(nodes) {
 			node.element.children[2].innerText = node.objectName;
 		}
 	});
+}
+
+function updateResultSelected(resultDOMElements, currentIndex, newIndex) {
+	removeClass(resultDOMElements[currentIndex], 'selected');
+	addClass(resultDOMElements[newIndex], 'selected');
 }
 
 // Program

@@ -3,12 +3,12 @@
 <head>
 	<title>derevo</title>
 	<style type="text/css">
+		* {
+			font-family: monospace;
+		}
 		.input-block {
-			position: absolute;
-			margin: 0 auto;
+			position: fixed;
 			width: 300px;
-			left: 0;
-			right: 0;
 		}
 			.input {
 				width: 300px;
@@ -18,18 +18,29 @@
 				font-size: 14px;
 				color: #777;
 			}
-		.tree-node {
-			color: #333;
+			.results .selected {
+				background: #ddd;
+			}
+		.tree {
+			position: absolute;
+			left: 350px;
 		}
-			.space {
-				white-space: pre;
+			.tree-node {
+				color: #333;
 			}
-			.objectName {
-				margin-left: 10px;
-			}
-			.match {
-				font-weight: bold;
-			}
+				.space {
+					white-space: pre;
+				}
+				.objectName {
+					margin-left: 10px;
+				}
+				.match {
+					font-weight: bold;
+					color: #777;
+				}
+				.tree .selected {
+					font-weight: bold;
+				}
 	</style>
 </head>
 <body>
