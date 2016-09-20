@@ -22,8 +22,21 @@
 // var mock = '{"objectName":"","type":"Hecataeus","children":[{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlSettings"},{"objectName":"","type":"QQmlComponent"},{"objectName":"","type":"QQmlComponent"},{"objectName":"","type":"QQmlTimer"},{"objectName":"","type":"QQuickLoader","children":[]},{"objectName":"","type":"LocaleItem","children":[{"objectName":"","type":"QQmlConnections"}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"RegionUILoader","children":[{"objectName":"","type":"UpdateService"},{"objectName":"","type":"RegionManager"},{"objectName":"","type":"LocationItem"},{"objectName":"","type":"JamCollectorObject"},{"objectName":"","type":"Registry","children":[{"objectName":"","type":"RegistryItem"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"}]},{"objectName":"","type":"MapContainer","children":[{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QObject"},{"objectName":"","type":"LowMemoryNotifier","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQmlConnections"}]}]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"Region","children":[{"objectName":"RegionEntryPointLoader","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"RegistryItem"},{"objectName":"","type":"QQmlTimer"},{"objectName":"AppWindowLoader","type":"QQuickLoader","children":[{"objectName":"","type":"MainWindow","children":[{"objectName":"","type":"RConnection"},{"objectName":"","type":"QObject"},{"objectName":"","type":"QObject"},{"objectName":"","type":"QObject"},{"objectName":"","type":"ErrorMessages"},{"objectName":"","type":"RConnection"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"RouteEditorItem"},{"objectName":"","type":"FollowDriverItem"},{"objectName":"","type":"BookmarkMapLayerObject"},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"MapControl","children":[{"objectName":"","type":"IndoorItem"},{"objectName":"","type":"RouteMapLayerItem"},{"objectName":"","type":"LocationIndicatorItem"},{"objectName":"","type":"MapSelectionItem","children":[]},{"objectName":"","type":"MapPositionItem","children":[]},{"objectName":"","type":"MapObjectsShowItem","children":[]},{"objectName":"floorsControl","type":"IndoorViewItem","children":[{"objectName":"","type":"QQuickBorderImage","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"QQuickListView","children":[{"objectName":"","type":"QQuickItem","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]}]}]},{"objectName":"","type":"MapCompass","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]}]},{"objectName":"trafficJam","type":"MapCongestion","children":[{"objectName":"","type":"JamManagerObject"},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"MapCongestionStyle","children":[]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"RoundButton","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"RoundButtonStyle","children":[{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickMouseArea","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"BaseLabel","children":[]}]}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QBrixComponent","children":[{"objectName":"","type":"QQmlTimer"},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[]}]},{"objectName":"","type":"QQuickCanvasItem","children":[]}]}]}]}]}]},{"objectName":"","type":"MapGeoposition","children":[{"objectName":"","type":"ScreenLockerItem"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[]}]},{"objectName":"","type":"RoundButton","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"RoundButtonStyle","children":[{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]},{"objectName":"","type":"MapZoom","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"MapZoomStyle","children":[]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickMouseArea","children":[]}]}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"zoomIn","type":"RoundButton","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"RoundButtonStyle","children":[{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"zoomOut","type":"RoundButton","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"RoundButtonStyle","children":[{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]}]}]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]}]}]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickShaderEffectSource","children":[]}]},{"objectName":"","type":"SideDrawer","children":[{"objectName":"","type":"QQuickLoader","children":[{"objectName":"leftSideBar","type":"SideBar","children":[{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickFlickable","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickColumn","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"TextLabel","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickColumn","children":[{"objectName":"","type":"SBRegionMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"TextLabel","children":[]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"TextLabel","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]}]}]},{"objectName":"","type":"SBRegionMenuButton","children":[{"objectName":"","type":"RouteAgentItem"},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"TextLabel","children":[]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"TextLabel","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]}]}]},{"objectName":"","type":"SBRegionMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"TextLabel","children":[]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"TextLabel","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]}]}]},{"objectName":"","type":"SBRegionMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"TextLabel","children":[]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"TextLabel","children":[]}]},{"objectName":"","type":"QQuickRectangle","children":[]}]}]}]},{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQuickColumn","children":[{"objectName":"","type":"SBAppMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"TextLabel","children":[]}]}]},{"objectName":"","type":"SBAppMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"TextLabel","children":[]}]}]},{"objectName":"","type":"SBAppMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"TextLabel","children":[]}]}]},{"objectName":"","type":"SBAppMenuButton","children":[{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"TextLabel","children":[]}]}]}]}]}]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]}]}]}]},{"objectName":"keyGrabber__mainWindow","type":"QQuickItem","children":[]},{"objectName":"","type":"AppToast","children":[{"objectName":"","type":"QObject"},{"objectName":"","type":"QObject"},{"objectName":"","type":"ToasterHelperItem"}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQuickItem","children":[{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"}]}]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"VendorRegistrationItem","children":[]}]},{"objectName":"","type":"QQuickLoader","children":[]},{"objectName":"","type":"QQuickLoader","children":[]},{"objectName":"mainBssCollector","type":"BssCollector","children":[{"objectName":"","type":"QQmlConnections"}]},{"objectName":"","type":"BookmarkManagerItem","children":[]},{"objectName":"MainWindow/StackView","type":"ExtendedStackView","children":[{"objectName":"","type":"QObject"},{"objectName":"cityPage","type":"CityPage","children":[{"objectName":"","type":"RConnection"},{"objectName":"","type":"QObject"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"GlideContainer","children":[{"objectName":"CityPage/StackView","type":"ExtendedStackView","children":[{"objectName":"dashboardPage","type":"DashboardPage","children":[{"objectName":"","type":"RConnection"},{"objectName":"","type":"QObject"},{"objectName":"","type":"QQuickNumberAnimation"},{"objectName":"","type":"QQuickNumberAnimation"},{"objectName":"","type":"QQuickYAnimator"},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"pieMenu","type":"MapDashboard","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"ImageMask","children":[{"objectName":"","type":"QQuickImage","children":[]}]},{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickRepeater","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]}]}]},{"objectName":"cityBssCollector","type":"BssCollector","children":[]},{"objectName":"","type":"MovableHeader","children":[{"objectName":"topBar","type":"TopBar","children":[{"objectName":"","type":"QQmlTimer"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]},{"objectName":"","type":"QQuickLoader","children":[]},{"objectName":"","type":"QQuickLoader","children":[{"objectName":"","type":"QQmlConnections"}]},{"objectName":"","type":"SearchTopBarPanel","children":[{"objectName":"","type":"QObject"},{"objectName":"","type":"QQmlTimer"},{"objectName":"","type":"QQuickBorderImage","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"SearchInput","children":[{"objectName":"","type":"QQmlConnections"},{"objectName":"","type":"QQmlTimer"},{"objectName":"SearchInput/Menu","type":"QQuickItem","children":[{"objectName":"","type":"SandwichBackButton","children":[{"objectName":"","type":"QQuickParallelAnimation"},{"objectName":"","type":"QQuickNumberAnimation"},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]},{"objectName":"","type":"QQuickRectangle","children":[]}]},{"objectName":"asdasdasdasd","type":"QQuickMouseArea","children":[]}]},{"objectName":"__textEditLoader","type":"TextEditItem","children":[{"objectName":"__textEditAndroid","type":"TextEditAndroidNative","children":[{"objectName":"","type":"QQmlConnections"}]}]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"QQuickImage","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]}]}]}]}]}]},{"objectName":"","type":"QQuickRectangle","children":[{"objectName":"","type":"QQuickMultiPointTouchArea","children":[]},{"objectName":"","type":"QQuickMouseArea","children":[]}]}]}]}]}]}]}]}]}]}, "id": "undefined"}';
 
 var treeData = {};
+var flatNodes = [];
 var matchedNodes = [];
-var currentResultIndex = 0;
+function areNodesEqual(nodes1, nodes2) {
+	if (nodes1.length !== nodes2.length) {
+		return false;
+	}
+	for (var i = 0; i < nodes1.length; i++) {
+		if (nodes1[i] !== nodes2[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+var resultCursorIndex = 0;
+var resultSelectedIndex = 0;
 
 // lastSelector used to evade same finding work. It is not a valid selector to make a request.
 var lastSelector = {
@@ -38,11 +51,13 @@ function updateLastSelector(query, index) {
 // currentSelector used to make requests. It is a valid selector.
 var currentSelector = {
 	query: '',
-	index: 0
+	index: 0,
+	searchType: 'type'
 };
-function updateCurrentSelector(query, index) {
+function updateCurrentSelector(query, index, searchType) {
 	currentSelector.query = query;
 	currentSelector.index = index;
+	currentSelector.searchType = searchType;
 }
 
 // [{propertyName: prop, element: propElement}]
@@ -153,10 +168,13 @@ input.addEventListener('change', handleInput);
 input.addEventListener('keydown', function(event) {
 	if (event.keyCode === 38) {
 		event.preventDefault();
-		return handleUpDownArrows(true);
+		return handleUpArrow();
 	} else if (event.keyCode === 40) {
 		event.preventDefault();
-		return handleUpDownArrows(false);
+		return handleDownArrow();
+	} else if (event.keyCode === 13) {
+		event.preventDefault();
+		return handleEnter();
 	}
 });
 // example: "DirectoryPage[2]"
@@ -185,7 +203,7 @@ function handleInput(event) {
 	if (queryParts.length === 1) {
 		var q = queryParts[0];
 		var r = selectorRegexp.exec(q);
-		var i = r[3] || 0;
+		var i = r[3] ? +r[3] : 0;
 		q = r[1];
 
 		var searchType = q.startsWith('#')
@@ -206,41 +224,77 @@ function handleInput(event) {
 			? findBy(treeData, searchType, q)
 			: [];
 
+		if (matchedNodes.length && matchedNodes[resultSelectedIndex]) {
+			// remove highlight from the old list
+			unhighlightTreeNode(matchedNodes[resultSelectedIndex]);
+			removeClass(resultsElement.children[resultCursorIndex], 'cursor');
+			removeClass(resultsElement.children[resultSelectedIndex], 'selected');
+		}
+
+
 		if (!nodes.length) {
 			unmatchElements(matchedNodes);
 			matchedNodes = nodes;
+			updateResults(matchedNodes);
+			updateProperties([]);
 			return;
 		}
 
-		matchedNodes = nodes;
-		updateResults(matchedNodes);
+		if (!areNodesEqual(matchedNodes, nodes)) {
+			matchedNodes = nodes;
+			updateResults(matchedNodes);
+		}
 
 		var selectedNode = matchedNodes[i];
 		var selector = getSelector(selectedNode, searchType);
-		updateCurrentSelector(selector, i);
+		updateCurrentSelector(selector, i, searchType);
 
 		addBorderToElement(selector, i);
 		listProperties(selector, i);
 
+		// tree-node selection
 		matchedNodes.forEach(function(node) {
 			match(node.element, searchType, node[searchType], query);
 		});
 		match(selectedNode.element, searchType, selectedNode[searchType], query, true);
 
-		selectedNode.element.scrollIntoView();
+		highlightTreeNode(selectedNode);
+
+		// results (suggests) selection
+		resultCursorIndex = resultSelectedIndex = i;
+		addClass(resultsElement.children[i], 'cursor');
+		addClass(resultsElement.children[i], 'selected');
+
+		if (!isElementInViewport(selectedNode.element)) {
+			selectedNode.element.scrollIntoView();
+		}
+	} else if (queryParts.length === 2) {
+
 	}
 }
-function handleUpDownArrows(up) {
+function handleUpArrow() {
 	if (matchedNodes.length > 1) {
-		var newResultIndex = up
-			? currentResultIndex - 1 < 0
-				? matchedNodes.length - 1
-				: currentResultIndex - 1
-			: currentResultIndex + 1 > matchedNodes.length - 1
-				? 0
-				: currentResultIndex + 1;
-		updateResultSelected(resultsElement.children, currentResultIndex, newResultIndex);
-		currentResultIndex = newResultIndex;
+		var newCursor = resultCursorIndex - 1 < 0
+			? matchedNodes.length - 1
+			: resultCursorIndex - 1;
+		removeClass(resultsElement.children[resultCursorIndex], 'cursor');
+		resultCursorIndex = newCursor;
+		addClass(resultsElement.children[newCursor], 'cursor');
+	}
+}
+function handleDownArrow() {
+	if (matchedNodes.length > 1) {
+		var newCursor = resultCursorIndex + 1 > matchedNodes.length - 1
+			? 0
+			: resultCursorIndex + 1;
+		removeClass(resultsElement.children[resultCursorIndex], 'cursor');
+		resultCursorIndex = newCursor;
+		addClass(resultsElement.children[newCursor], 'cursor');
+	}
+}
+function handleEnter() {
+	if (matchedNodes.length) {
+		selectResult('result', matchedNodes[resultCursorIndex]);
 	}
 }
 function getSelector(node, searchType, index) {
@@ -252,13 +306,19 @@ function getSelector(node, searchType, index) {
 		: node.type + selectorIndex;
 }
 
+/*
+	@param node <Object> root node to start search from
+	@param searchType <String> 'objectName'|'type'
+	@param query <String> should be lowerCased
+	@param [results] <Array> results as a flat array
+*/
 function findBy(node, searchType, query, results) {
 	results = results || [];
 	if (node[searchType].toLowerCase().startsWith(query)) {
 		results.push(node);
 		match(node.element, searchType, node[searchType], query);
 	} else if (matchedNodes.indexOf(node) !== -1) {
-		unmatch(node.element, searchType, node[searchType]);
+		unmatch(node.element, currentSelector.searchType, node[searchType]);
 	}
 	if (node.children) {
 		node.children.forEach(function(child) {
@@ -273,7 +333,10 @@ function updateTree(elements) {
 	treeData = elements;
 	createNode(treeElement, treeData);
 }
-function checkResults(visualType, nodeData) {
+/*
+	@param visualType <String> 'result'|'tree-node'
+*/
+function selectResult(visualType, nodeData) {
 	var result = [];
 	var searchType = nodeData.objectName ? 'objectName' : 'type';
 
@@ -281,6 +344,8 @@ function checkResults(visualType, nodeData) {
 		result = matchedNodes.filter(function(matchedNode) {
 			return matchedNode[searchType] === nodeData[searchType];
 		});
+	} else if (visualType === 'tree-node') {
+		result = findBy(treeData, searchType, nodeData[searchType].toLowerCase());
 	}
 
 	input.value = getSelector(
@@ -298,9 +363,23 @@ function checkResults(visualType, nodeData) {
 // DOM
 var treeElement = document.querySelectorAll('.tree')[0];
 var resultsElement = document.querySelectorAll('.results')[0];
+var resultsCountContainerElement = document.querySelectorAll('.results-count')[0];
 var resultsCountElement = document.querySelectorAll('.results-count-number')[0];
 var propertiesElement = document.querySelectorAll('.properties')[0];
 var propertiesCountElement = document.querySelectorAll('.properties-count-number')[0];
+
+
+var resultsVisible = true;
+resultsCountContainerElement.addEventListener('click', function() {
+	resultsVisible = !resultsVisible;
+	if (resultsVisible) {
+		removeClass(resultsElement, 'hidden');
+		removeClass(resultsCountContainerElement, 'collapsed');
+	} else {
+		addClass(resultsElement, 'hidden');
+		addClass(resultsCountContainerElement, 'collapsed');
+	}
+});
 
 
 /*
@@ -354,7 +433,7 @@ function createNodeElement(nodeData, visualType, deepness) {
 	}
 
 	node.addEventListener('click', function(event) {
-		var results = checkResults(visualType, nodeData);
+		var results = selectResult(visualType, nodeData);
 	});
 
 	return node;
@@ -440,6 +519,16 @@ function removeClass(element, className) {
 		element.className = classes.join(' ');
 	}
 }
+function isElementInViewport(el) {
+	var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
 /*
 	element <div .node>
 				<span .space>
@@ -453,8 +542,8 @@ function removeClass(element, className) {
 function match(element, searchType, string, query, select) {
 	var matchClass = select ? 'selected' : 'match';
 	var childIndex = searchType === 'type' ? 1 : 2;
-	var typeElement = element.children[childIndex];
-	typeElement.innerHTML = '<span class="' + matchClass + '">' + string.substr(0, query.length) + '</span>' + string.substr(query.length);
+	var elementOfSearchType = element.children[childIndex];
+	elementOfSearchType.innerHTML = '<span class="' + matchClass + '">' + string.substr(0, query.length) + '</span>' + string.substr(query.length);
 }
 function unmatch(element, searchType, string) {
 	var childIndex = searchType === 'type' ? 1 : 2;
@@ -470,9 +559,17 @@ function unmatchElements(nodes) {
 	});
 }
 
-function updateResultSelected(resultDOMElements, currentIndex, newIndex) {
-	removeClass(resultDOMElements[currentIndex], 'selected');
-	addClass(resultDOMElements[newIndex], 'selected');
+function highlightTreeNode(node) {
+	addClass(node.element, 'hl');
+	if (node.children) {
+		node.children.forEach(highlightTreeNode);
+	}
+}
+function unhighlightTreeNode(node) {
+	removeClass(node.element, 'hl');
+	if (node.children) {
+		node.children.forEach(unhighlightTreeNode);
+	}
 }
 
 // Program
