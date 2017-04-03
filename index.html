@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>derevo</title>
+	<meta charset="utf-8">
 	<style type="text/css">
 		/*#B4DC7F medium spring bud*/
 		/*#FCD581 jasmine*/
@@ -11,9 +12,17 @@
 		/*#AA4465 medium-ruby*/
 		/*#8F5C38 coconut*/
 		/*#A89B8C grullo*/
+
+		/*#2BA84A WAGENINGEN GREEN*/
+		/*#248232 FOREST GREEN (WEB)*/
 		* {
 			font-family: monospace;
 		}
+		.hidden {
+			display: none;
+		}
+
+
 		.input-block {
 			position: fixed;
 			width: 300px;
@@ -22,6 +31,7 @@
 				width: 300px;
 			}
 			.results-count,
+			.actions-title,
 			.properties-count {
 				font-size: 14px;
 				color: #777;
@@ -34,13 +44,20 @@
 				background: #CBEEF3;
 				cursor: pointer;
 			}
-			.results.hidden {
-				display: none;
-			}
-			.results .cursor {
+			.results-list .cursor {
 				background: #f8eec7;
 			}
-			.results .selected {
+			.results-list .selected {
+				font-weight: bold;
+			}
+			.actions-list {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				cursor: pointer;
+			}
+			.action-rectangle-everything.active {
+				color: #2BA84A;
 				font-weight: bold;
 			}
 		.tree {
@@ -71,10 +88,20 @@
 <body>
 	<div class='input-block'>
 		<textarea autofocus="true" class='input' placeholder="enter command"></textarea>
-		<div class='results-count'>found: <span class='results-count-number'>0</span></div>
-		<div class='results'></div>
-		<div class='properties-count'>properties: <span class='properties-count-number'>0</span></div>
-		<div class='properties'></div>
+		<div class='results'>
+			<div class='results-count'>found: <span class='results-count-number'>0</span></div>
+			<div class='results-list'></div>
+		</div>
+		<div class='actions hidden'>
+			<div class='actions-title'>actions:</div>
+			<ul class='actions-list'>
+				<li class='action-rectangle-everything'>rectangle everything</li>
+			</ul>
+		</div>
+		<div class='properties'>
+			<div class='properties-count'>properties: <span class='properties-count-number'>0</span></div>
+			<div class='properties-list'></div>
+		</div>
 	</div>
 
 	<div class='tree'></div>

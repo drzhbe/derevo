@@ -63,6 +63,67 @@ function updateCurrentSelector(query, index, searchType) {
 // [{propertyName: prop, element: propElement}]
 var currentProperties = [];
 
+
+var actionsAvailable = false;
+function enableActionsAvailable() {
+	if (!actionsAvailable) {
+		actionsAvailable = true;
+		actionsElement.classList.remove('hidden');
+	}
+}
+function disableActionsAvailable(argument) {
+	if (actionsAvailable) {
+		actionsAvailable = false;
+		actionsElement.classList.add('hidden');
+	}
+}
+
+
+var rectangleEverythingMode = false;
+function enableRectangleEverythingMode() {
+	if (!rectangleEverythingMode) {
+		rectangleEverythingMode = true;
+		rectangleEverything(
+			getSelector(matchedNodes[resultSelectedIndex], currentSelector.searchType),
+			currentSelector.index
+		);
+		actionRectangleEverythingElement.classList.add('active');
+	}
+}
+function disableRectangleEverythingMode() {
+	if (rectangleEverythingMode) {
+		rectangleEverythingMode = false;
+		removeBorders();
+		addBorderToElement(
+			getSelector(matchedNodes[resultSelectedIndex], currentSelector.searchType),
+			currentSelector.index
+		);
+		actionRectangleEverythingElement.classList.remove('active');
+	}
+}
+function toggleRectangleEverythingMode() {
+	if (rectangleEverythingMode) {
+		disableRectangleEverythingMode();
+	} else {
+		enableRectangleEverythingMode();
+	}
+}
+// var currentModes = 0;
+// var RECTANGLE_EVERYTHING_MODE = 1;
+// function enableMode(mode) {
+// 	currentModes |= mode;
+// }
+// function disableMode(mode) {
+// 	currentModes &= ~mode;
+// }
+// function toggleMode(mode) {
+// 	if (currentModes & mode) {
+// 		disableMode(mode);
+// 	} else {
+// 		enableMode(mode);
+// 	}
+// }
+
 /*
 	name <String>
 		Default type: 'MouseArea(0x12345678)'
@@ -96,7 +157,8 @@ ws.onmessage = function(event) {
 			break;
 		case 'listProperties':
 			if (data.result instanceof Array && data.result.length) {
-				updateProperties(data.result);
+				currentProperties = prepareProperties(data.result);
+				updateProperties(currentProperties);
 			}
 			break;
 		case 'getProperty':
@@ -159,6 +221,21 @@ function addBorderToElement(selector, index) {
 	};
 	ws.send(JSON.stringify(request));
 }
+function rectangleEverything(selector, index) {
+	var request = {
+		jsonrpc: '2.0',
+		method: 'rectangleEverything',
+		params: [selector, index]
+	};
+	ws.send(JSON.stringify(request));
+}
+function removeBorders() {
+	var request = {
+		jsonrpc: '2.0',
+		method: 'removeBorders'
+	};
+	ws.send(JSON.stringify(request));
+}
 
 
 // Command Line
@@ -190,12 +267,16 @@ function handleInput(event) {
 	if (query === lastSelector.query && 0 === lastSelector.index) {
 		return;
 	}
+
+	disableRectangleEverythingMode();
+
 	if (!query) {
 		updateLastSelector('', 0);
 		unmatchElements(matchedNodes);
 		matchedNodes = [];
 		updateResults(matchedNodes);
 		updateProperties([]);
+		disableActionsAvailable();
 		return;
 	}
 
@@ -227,8 +308,8 @@ function handleInput(event) {
 		if (matchedNodes.length && matchedNodes[resultSelectedIndex]) {
 			// remove highlight from the old list
 			unhighlightTreeNode(matchedNodes[resultSelectedIndex]);
-			removeClass(resultsElement.children[resultCursorIndex], 'cursor');
-			removeClass(resultsElement.children[resultSelectedIndex], 'selected');
+			resultsListElement.children[resultCursorIndex].classList.remove('cursor');
+			resultsListElement.children[resultSelectedIndex].classList.remove('selected');
 		}
 
 
@@ -237,8 +318,11 @@ function handleInput(event) {
 			matchedNodes = nodes;
 			updateResults(matchedNodes);
 			updateProperties([]);
+			disableActionsAvailable();
 			return;
 		}
+
+		enableActionsAvailable();
 
 		if (!areNodesEqual(matchedNodes, nodes)) {
 			matchedNodes = nodes;
@@ -262,14 +346,14 @@ function handleInput(event) {
 
 		// results (suggests) selection
 		resultCursorIndex = resultSelectedIndex = i;
-		addClass(resultsElement.children[i], 'cursor');
-		addClass(resultsElement.children[i], 'selected');
+		resultsListElement.children[i].classList.add('cursor', 'selected');
 
 		if (!isElementInViewport(selectedNode.element)) {
 			selectedNode.element.scrollIntoView();
 		}
 	} else if (queryParts.length === 2) {
-
+		var q = queryParts[1];
+		updateProperties(filterProperties(currentProperties, q));
 	}
 }
 function handleUpArrow() {
@@ -277,9 +361,9 @@ function handleUpArrow() {
 		var newCursor = resultCursorIndex - 1 < 0
 			? matchedNodes.length - 1
 			: resultCursorIndex - 1;
-		removeClass(resultsElement.children[resultCursorIndex], 'cursor');
+		resultsListElement.children[resultCursorIndex].classList.remove('cursor');
 		resultCursorIndex = newCursor;
-		addClass(resultsElement.children[newCursor], 'cursor');
+		resultsListElement.children[newCursor].classList.add('cursor');
 	}
 }
 function handleDownArrow() {
@@ -287,9 +371,9 @@ function handleDownArrow() {
 		var newCursor = resultCursorIndex + 1 > matchedNodes.length - 1
 			? 0
 			: resultCursorIndex + 1;
-		removeClass(resultsElement.children[resultCursorIndex], 'cursor');
+		resultsListElement.children[resultCursorIndex].classList.remove('cursor');
 		resultCursorIndex = newCursor;
-		addClass(resultsElement.children[newCursor], 'cursor');
+		resultsListElement.children[newCursor].classList.add('cursor');
 	}
 }
 function handleEnter() {
@@ -318,7 +402,7 @@ function findBy(node, searchType, query, results) {
 		results.push(node);
 		match(node.element, searchType, node[searchType], query);
 	} else if (matchedNodes.indexOf(node) !== -1) {
-		unmatch(node.element, currentSelector.searchType, node[searchType]);
+		unmatch(node.element, currentSelector.searchType, node[currentSelector.searchType]);
 	}
 	if (node.children) {
 		node.children.forEach(function(child) {
@@ -336,9 +420,10 @@ function updateTree(elements) {
 /*
 	@param visualType <String> 'result'|'tree-node'
 */
-function selectResult(visualType, nodeData) {
+function selectResult(visualType, nodeData, searchType) {
 	var result = [];
-	var searchType = nodeData.objectName ? 'objectName' : 'type';
+	searchType = searchType
+		|| (nodeData.objectName ? 'objectName' : 'type');
 
 	if (visualType === 'result' && matchedNodes.length) {
 		result = matchedNodes.filter(function(matchedNode) {
@@ -359,25 +444,44 @@ function selectResult(visualType, nodeData) {
 	return result;
 }
 
+function prepareProperties(properties) {
+	return compact(
+		properties.map(function(prop) {
+			if (!prop.endsWith('Changed')) {
+				return {propertyName: prop, element: null};
+			}
+	}));
+}
+
+function filterProperties(properties, query) {
+	return properties.filter(function(prop) {
+		return prop.propertyName.startsWith(query);
+	});
+}
+
 
 // DOM
 var treeElement = document.querySelectorAll('.tree')[0];
-var resultsElement = document.querySelectorAll('.results')[0];
+var resultsListElement = document.querySelectorAll('.results-list')[0];
 var resultsCountContainerElement = document.querySelectorAll('.results-count')[0];
 var resultsCountElement = document.querySelectorAll('.results-count-number')[0];
-var propertiesElement = document.querySelectorAll('.properties')[0];
+var propertiesListElement = document.querySelectorAll('.properties-list')[0];
 var propertiesCountElement = document.querySelectorAll('.properties-count-number')[0];
+
+var actionsElement = document.querySelectorAll('.actions')[0];
+var actionRectangleEverythingElement = document.querySelectorAll('.action-rectangle-everything')[0];
+actionRectangleEverythingElement.addEventListener('click', toggleRectangleEverythingMode);
 
 
 var resultsVisible = true;
 resultsCountContainerElement.addEventListener('click', function() {
 	resultsVisible = !resultsVisible;
 	if (resultsVisible) {
-		removeClass(resultsElement, 'hidden');
-		removeClass(resultsCountContainerElement, 'collapsed');
+		resultsListElement.classList.remove('hidden');
+		resultsCountContainerElement.classList.remove('collapsed');
 	} else {
-		addClass(resultsElement, 'hidden');
-		addClass(resultsCountContainerElement, 'collapsed');
+		resultsListElement.classList.add('hidden');
+		resultsCountContainerElement.classList.add('collapsed');
 	}
 });
 
@@ -413,77 +517,81 @@ function createNode(parent, node, deepness) {
 */
 function createNodeElement(nodeData, visualType, deepness) {
 	var node = document.createElement('div');
-	addClass(node, visualType);
+	node.classList.add(visualType);
 
 	var space = document.createElement('span');
-	addClass(space, 'space');
+	space.classList.add('space');
 	space.innerText = new Array(deepness * 4).join(' ');
 	node.appendChild(space);
 
 	var type = document.createElement('span');
-	addClass(type, 'type');
+	type.classList.add('type');
 	type.innerText = nodeData.type;
 	node.appendChild(type);
 
+	type.addEventListener('click', function(event) {
+		selectResult(visualType, nodeData, 'type');
+	});
+
 	if (nodeData.objectName) {
 		var objectName = document.createElement('span');
-		addClass(objectName, 'objectName');
+		objectName.classList.add('objectName');
 		objectName.innerText = nodeData.objectName;
 		node.appendChild(objectName);
-	}
 
-	node.addEventListener('click', function(event) {
-		var results = selectResult(visualType, nodeData);
-	});
+		objectName.addEventListener('click', function(event) {
+			selectResult(visualType, nodeData, 'objectName');
+		});
+	}
 
 	return node;
 }
 function updateResults(nodes) {
 	if (!nodes.length) {
-		resultsElement.innerHTML = '';
+		resultsListElement.innerHTML = '';
 	} else {
 		var fragment = document.createDocumentFragment();
 		nodes.forEach(function(node) {
 			fragment.appendChild(createNodeElement(node, 'result', 0));
 		});
-		resultsElement.innerHTML = '';
-		resultsElement.appendChild(fragment);
+		resultsListElement.innerHTML = '';
+		resultsListElement.appendChild(fragment);
 	}
 
 	resultsCountElement.innerText = nodes.length;
 }
-function updateProperties(properties) {
-	currentProperties = [];
+/*!
+	Not a pure function, modifies `property.element`.
 
+	@param type:array properties [{propertyName: <string>, element: <DOM>}]
+*/
+function updateProperties(properties) {
 	if (!properties.length) {
-		propertiesElement.innerHTML = '';
+		propertiesListElement.innerHTML = '';
 	} else {
 		var fragment = document.createDocumentFragment();
-		var filteredProperties = properties.filter(function(prop) {
-			return !prop.endsWith('Changed');
-		});
-		filteredProperties.forEach(function(prop) {
+		properties.forEach(function(prop) {
 			var propElement = document.createElement('div');
-			addClass(propElement, 'property');
+			propElement.classList.add('property');
 
 			var propKey = document.createElement('span');
-			addClass(propKey, 'property__key');
-			propKey.innerText = prop;
+			propKey.classList.add('property__key');
+			propKey.innerText = prop.propertyName;
 			propKey.addEventListener('click', function(event) {
-				getProperty(currentSelector.query, currentSelector.index, prop);
+				getProperty(currentSelector.query, currentSelector.index, prop.propertyName);
 			});
 
 			var propValue = document.createElement('span');
-			addClass(propValue, 'property__value');
+			propValue.classList.add('property__value');
 			propValue.setAttribute('contenteditable', 'true');
 			propValue.addEventListener('keydown', function(event) {
 				if (event.keyCode === 13) {
 					event.preventDefault();
-					setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
+					setProperty(currentSelector.query, currentSelector.index, prop.propertyName, event.target.textContent);
 				}
 			});
 			propValue.addEventListener('blur', function(event) {
-				setProperty(currentSelector.query, currentSelector.index, prop, event.target.textContent);
+				setProperty(currentSelector.query, currentSelector.index, prop.propertyName, event.target.textContent);
 			});
 
 			propElement.appendChild(propKey);
@@ -491,10 +599,11 @@ function updateProperties(properties) {
 
 			fragment.appendChild(propElement);
 
-			currentProperties.push({propertyName: prop, element: propElement});
+			// modify data
+			prop.element = propElement;
 		});
-		propertiesElement.innerHTML = '';
-		propertiesElement.appendChild(fragment);
+		propertiesListElement.innerHTML = '';
+		propertiesListElement.appendChild(fragment);
 	}
 
 	propertiesCountElement.innerText = properties.length;
@@ -503,21 +612,6 @@ function updateProperty(key, value) {
 	currentProperties.find(function(prop) {
 		return prop.propertyName === key;
 	}).element.children[1].innerText = value;
-}
-function addClass(element, className) {
-	var classes = element.className.split(' ');
-	if (!(className in classes)) {
-		classes.push(className);
-		element.className = classes.join(' ');
-	}
-}
-function removeClass(element, className) {
-	var classes = element.className.split(' ');
-	var index = classes.indexOf(className);
-	if (index !== -1) {
-		classes.splice(index, 1);
-		element.className = classes.join(' ');
-	}
 }
 function isElementInViewport(el) {
 	var rect = el.getBoundingClientRect();
@@ -560,16 +654,22 @@ function unmatchElements(nodes) {
 }
 
 function highlightTreeNode(node) {
-	addClass(node.element, 'hl');
+	node.element.classList.add('hl');
 	if (node.children) {
 		node.children.forEach(highlightTreeNode);
 	}
 }
 function unhighlightTreeNode(node) {
-	removeClass(node.element, 'hl');
+	node.element.classList.remove('hl');
 	if (node.children) {
 		node.children.forEach(unhighlightTreeNode);
 	}
+}
+
+function compact(array) {
+	return array.filter(function(element) {
+		return element;
+	});
 }
 
 // Program
